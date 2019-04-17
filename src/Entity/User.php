@@ -56,7 +56,7 @@ class User implements UserInterface, JsonSerializable
     private $password;
 
     /**
-     * @Assert\NotBlank()
+
      * @Assert\Length(max=4096)
      */
     private $plainPassword;
@@ -119,7 +119,7 @@ class User implements UserInterface, JsonSerializable
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
      * )
      */
-    private $roles;
+    private $userroles;
 
 
     public function __construct()
@@ -429,7 +429,7 @@ class User implements UserInterface, JsonSerializable
          * so that doctrine will automatically Join user roles each time you find a
          * User.
          **/
-        foreach($this->getUserRoles() as $role) {
+        foreach($this->getUserRoles()->toArray() as $role) {
             $roles[] = $role->getName();
         }
         return $roles;
@@ -440,18 +440,42 @@ class User implements UserInterface, JsonSerializable
      * @param Collection $roles
      * @return $this
      */
-    public function setRoles(Collection $roles)
-    {
-        $this->roles = $roles;
-        return $this;
-    }
+//    public function setRoles(Collection $roles)
+//    {
+//        $this->roles = $roles;
+//        return $this;
+//    }
 
     /**
      * @return Role[]|ArrayCollection|Collection
      */
     function getUserRoles()
     {
-        return $this->roles;
+        return $this->userroles;
+    }
+
+    /**
+     * @param Role[]|Collection $userroles
+     */
+    public function setUserRoles($userroles)
+    {
+        $this->userroles = $userroles;
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function addRole(Role $role)
+    {
+        $this->userroles->add($role);
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function removeRole(Role $role)
+    {
+        $this->userroles->removeElement($role);
     }
 
     /**
@@ -508,4 +532,6 @@ class User implements UserInterface, JsonSerializable
             'name' => $this->getName()
         ];
     }
+
+
 }

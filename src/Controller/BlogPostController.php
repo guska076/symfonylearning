@@ -40,6 +40,7 @@ class BlogPostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $blogPost->setUser($this->getUser());
             $entityManager->persist($blogPost);
             $entityManager->flush();
 
@@ -73,6 +74,7 @@ class BlogPostController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $blogPost->setUser($this->getUser());
 
             return $this->redirectToRoute('blog_post_index', [
                 'id' => $blogPost->getId(),

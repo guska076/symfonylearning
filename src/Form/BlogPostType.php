@@ -18,7 +18,7 @@ class BlogPostType extends AbstractType
             ->add('body')
             //->add('createdAt')
             //->add('updatedAt')
-            ->add('user')
+            //->add('user')
         ;
     }
 
